@@ -13,12 +13,14 @@ export default function ChaptersPage({ params }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    getChapters(params.bookId)
-      .then((data) => setChapters(data))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [params.bookId]);
+    useEffect(() => {
+      fetch(`/api/chapters?bookId=${params.bookId}`)
+        .then((res) => res.json())
+        .then((data) => setChapters(data))
+        .catch((err) => setError(err.error || err.message))
+        .finally(() => setLoading(false));
+    }, [params.bookId]);
+
 
   if (loading) return <p className="p-4">Cargando capítulos...</p>;
   if (error) return <p className="p-4 text-red-500">{error}</p>;

@@ -8,16 +8,14 @@ export default function BooksPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    fetch("/api/books")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.error) throw new Error(data.error);
-        setBooks(data);
-      })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+    useEffect(() => {
+      fetch("/api/books")
+        .then((res) => res.json())
+        .then((data) => setBooks(data))
+        .catch((err) => setError(err.error || err.message))
+        .finally(() => setLoading(false));
+    }, []);
+
 
   if (loading) return <p className="p-4">Cargando libros...</p>;
   if (error) return <p className="p-4 text-red-500">{error}</p>;

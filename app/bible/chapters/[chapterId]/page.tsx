@@ -12,12 +12,14 @@ export default function VersesPage({ params }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    getVerses(params.chapterId)
-      .then((data) => setVerses(data))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [params.chapterId]);
+    useEffect(() => {
+      fetch(`/api/verses?chapterId=${params.chapterId}`)
+        .then((res) => res.json())
+        .then((data) => setVerses(data))
+        .catch((err) => setError(err.error || err.message))
+        .finally(() => setLoading(false));
+    }, [params.chapterId]);
+
 
   if (loading) return <p className="p-4">Cargando versículos...</p>;
   if (error) return <p className="p-4 text-red-500">{error}</p>;
