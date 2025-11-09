@@ -43,9 +43,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white pb-16`} // pb-16 deja espacio para el menú inferior
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white pb-20`} // Deja espacio al final para el menú inferior
       >
         <main className="min-h-screen">{children}</main>
+
         {/* 🔹 Menú inferior visible solo si hay usuario logueado */}
         {user && <BibleBottomMenu />}
       </body>
