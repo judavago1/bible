@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Search, Heart, LogOut } from "lucide-react";
+import { BookOpen, Search, Heart, FileText, LogOut } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 
 export default function BibleBottomMenu() {
@@ -11,13 +11,14 @@ export default function BibleBottomMenu() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   const menuItems = [
-    { href: "/bible/verse", label: "Verso", icon: BookOpen },
-    { href: "/bible/search", label: "Buscar", icon: Search },
+    { href: "/bible/books", label: "Libros", icon: BookOpen },
     { href: "/bible/reflection", label: "Reflexión", icon: Heart },
+    { href: "/bible/verse", label: "Verso", icon: FileText },
+    { href: "/bible/search", label: "Buscar", icon: Search },
   ];
 
   return (
@@ -39,6 +40,7 @@ export default function BibleBottomMenu() {
         );
       })}
 
+      {/* Botón de salir */}
       <button
         onClick={handleLogout}
         className="flex flex-col items-center text-white hover:text-red-400 transition-colors"
