@@ -1,10 +1,10 @@
-"use client"; // Necesario para usar hooks y Supabase
+"use client";
 import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import BibleMenu from "./components/BibleMenu"; // 👈 Importamos el nuevo menú
+import BibleBottomMenu from "./components/BibleBottomMenu";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -13,7 +13,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔒 Verificar si hay usuario logueado
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
@@ -22,7 +21,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     };
     getUser();
 
-    // Escuchar cambios de sesión (login/logout)
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
@@ -44,10 +42,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* 🔹 Menú solo si hay usuario logueado */}
-        {user && <BibleMenu />}
-        <main>{children}</main>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white pb-16`} // pb-16 deja espacio para el menú inferior
+      >
+        <main className="min-h-screen">{children}</main>
+        {/* 🔹 Menú inferior visible solo si hay usuario logueado */}
+        {user && <BibleBottomMenu />}
       </body>
     </html>
   );
